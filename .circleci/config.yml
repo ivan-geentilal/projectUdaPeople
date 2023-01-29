@@ -62,7 +62,7 @@ jobs:
   
   test-frontend:
     docker:
-      - image: cimg/node:13.8.0
+      - image: circleci/node:13.8.0
       # Docker image here
     steps:
       - checkout
@@ -77,7 +77,7 @@ jobs:
           
   test-backend:
     docker:
-      - image: cimg/node:13.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -91,7 +91,7 @@ jobs:
 
   scan-frontend:
     docker:
-      - image: cimg/node:13.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -108,7 +108,7 @@ jobs:
 
   scan-backend:
     docker:
-      - image: cimg/node:13.8.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -162,6 +162,34 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       #- destroy-environment # Here's where you will add some code to rollback on failure    
+  
+  configure-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["c2:10:b3:22:8e:02:0d:32:3e:e0:7d:5f:05:06:37:0a"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            yum install -y tar gzip
+            sudo apt update
+            sudo apt install python3-pip
+            python3 -m pip install ansible
+            ansible --version
+            exit 1
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-server.yml
+            exit 1
+      # Here's where you will add some code to rollback on failure
+
 
 workflows:
   default:
@@ -177,3 +205,4 @@ workflows:
       - scan-backend:
           requires: [build-backend]
       - deploy-infrastructure    
+      - configure-infrastructure
