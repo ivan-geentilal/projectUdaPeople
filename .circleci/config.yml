@@ -174,8 +174,8 @@ jobs:
           name: Install dependencies
           command: |
             yum install -y tar gzip
-            apt update
-            apt install python3-pip
+            yum update
+            yum install python3-pip
             python3 -m pip install ansible
             ansible --version
       - attach_workspace:
