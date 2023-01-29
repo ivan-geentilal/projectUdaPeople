@@ -19,7 +19,6 @@ jobs:
             npm install
             npm run build
             npm audit fix
-            
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -38,15 +37,45 @@ jobs:
              npm install
              npm run build
              npm audit fix
-             
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+  
+  test-frontend:
+    docker:
+      - image: cimg/node:13.8.0
+      # Docker image here
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Run frontend test
+          command: |
+            cd frontend
+            npm install
+            npm test
+          
+  test-backend:
+    docker:
+      - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Run backend test
+          command: |
+            cd backend
+            npm install
+            npm test
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   default:
     jobs:
       - build-frontend
       - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
