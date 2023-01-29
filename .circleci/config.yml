@@ -170,8 +170,6 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["c2:10:b3:22:8e:02:0d:32:3e:e0:7d:5f:05:06:37:0a"]
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -181,6 +179,8 @@ jobs:
             python3 -m pip install ansible
             ansible --version
             exit 1
+      - attach_workspace:
+          at: ~/
       - run:
           name: Configure server
           command: |
