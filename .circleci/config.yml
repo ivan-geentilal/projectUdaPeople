@@ -125,14 +125,20 @@ jobs:
 
   deploy-infrastructure:
     docker:
-        - image: amazon/aws-cli
+        - image: cimg/base:stable
       # Docker image here that supports AWS CLI
     steps:
       - checkout
       - run:
           name: Install tar utility
           command: |
-            yum install -y tar gzip  
+            yum install -y tar gzip
+      - run:
+          name: Install awsCli2
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install  
       - run:
           name: Ensure back-end infrastructure exists--
           command: |
@@ -166,9 +172,15 @@ jobs:
   
   configure-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/base:stable
     steps:
       - checkout
+      - run:
+          name: Install awsCli2
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install  
       - add_ssh_keys:
           fingerprints: ["c2:10:b3:22:8e:02:0d:32:3e:e0:7d:5f:05:06:37:0a"]
       - run:
