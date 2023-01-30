@@ -181,6 +181,7 @@ jobs:
             ansible --version
       - attach_workspace:
           at: ~/
+      - run: cat ~/project/.circleci/ansible/inventory.txt
       - run:
           name: Configure server
           command: |
