@@ -241,7 +241,9 @@ jobs:
       - run:
           name: Install tar gz
           command: |
-            yum install -y tar gzip
+            sudo apt-get update
+            sudo apt-get install -y tar 
+            sudo apt-get install -y gzip
       - run:
           name: Install awscli
           command: |
@@ -251,16 +253,15 @@ jobs:
       - run:
           name: Install nodejs
           command: |
-           yum update
-           yum install -y nodejs
+           sudo apt-get install -y nodejs
       - run:
           name: Install npm
           command: |
-            # your code here
+            sudo apt-get install -y npm
       - run:
           name: Install python
           command: |
-             yum install -y python3-pip
+            sudo apt-get install -y python3-pip
       - run:
           name: Install ansible
           command: |
@@ -306,7 +307,9 @@ jobs:
       - run:
           name: Install tar gz
           command: |
-            yum install -y tar gzip
+            sudo apt-get update
+            sudo apt-get install -y tar 
+            sudo apt-get install -y gzip
       - run:
           name: Install awscli
           command: |
@@ -316,21 +319,20 @@ jobs:
       - run:
           name: Install nodejs
           command: |
-           yum update
-           yum install -y nodejs
+           sudo apt-get install -y nodejs
       - run:
           name: Install npm
           command: |
-            # your code here
+            sudo apt-get install -y npm
       - run:
           name: Install python
           command: |
-             yum install -y python3-pip
+            sudo apt-get install -y python3-pip
       - run:
           name: Install ansible
           command: |
              python3 -m pip install ansible
-             ansible --version    
+             ansible --version
       - run:
           name: Install dependencies
           command: |
@@ -372,7 +374,7 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      #- deploy-frontend:
-          #requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
       #- deploy-backend:
           #requires: [run-migrations]    
