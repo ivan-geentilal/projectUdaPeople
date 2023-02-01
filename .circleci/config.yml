@@ -391,7 +391,7 @@ jobs:
              python3 -m pip install ansible
              ansible --version
       - run:
-          name: Get backend url and backend smoke test
+          name: Get backend url and backend smoke test 
           command: |
             BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
