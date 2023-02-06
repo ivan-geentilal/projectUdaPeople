@@ -32,7 +32,7 @@ commands:
           name: Revert migrations
           # Add when this will run
           command: |
-            SUCCESS = $(curl --insecure https://kvdb.io/vhhKTbjLiy1KQKZ3iVq73/migration_${CIRCLE_WORKFLOW_ID:0:7}) 
+            SUCCESS=$(curl --insecure https://kvdb.io/vhhKTbjLiy1KQKZ3iVq73/migration_<< parameters.Workflow_ID >>) 
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
