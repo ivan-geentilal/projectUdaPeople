@@ -32,13 +32,12 @@ commands:
           name: Revert migrations
           # Add when this will run
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             SUCCESS = $(curl --insecure https://kvdb.io/vhhKTbjLiy1KQKZ3iVq73/migration_${CIRCLE_WORKFLOW_ID:0:7}) 
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  npm run migration:revert
+              cd ~/project/backend
+              npm install
+              npm run migration:revert
             fi
   
 # Define a job to be invoked later in a workflow.
@@ -382,7 +381,7 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment
-      
+
   smoke-test:
     docker:
       - image: cimg/base:stable 
