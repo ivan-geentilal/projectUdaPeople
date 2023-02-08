@@ -30,7 +30,6 @@ commands:
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
           command: |
             SUCCESS=$(curl --insecure https://kvdb.io/vhhKTbjLiy1KQKZ3iVq73/migration_<< parameters.Workflow_ID >>) 
             if(( $SUCCESS==1 )); 
